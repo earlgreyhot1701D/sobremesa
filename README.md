@@ -1,5 +1,7 @@
 # Sobremesa
 
+![Sobremesa banner — illustrated Mexican dishes on hand-painted talavera plates](assets/banner-readme.png)
+
 **Six meals, six cities, one country.**
 
 *Sobremesa* is the Spanish word for the time you stay at the table after the food is gone, talking. There is no English equivalent.
