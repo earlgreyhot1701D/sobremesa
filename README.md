@@ -8,7 +8,7 @@
 
 This is a record of six meals eaten in six Mexican cities over fourteen years, organized around one number: how long I stayed at each table.
 
-**Live:** [add your Vercel URL]
+**Live:** https://sobremesa-dev.vercel.app/
 **Write-up:** [add your dev.to post URL]
 
 Submitted to the [DEV Frontend Challenge, Comfort Food Edition](https://dev.to/challenges/frontend-2026-07-29), Perfect Landing prompt.
