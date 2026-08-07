@@ -388,22 +388,45 @@ footer .rule-l{max-width:420px;margin:0 auto var(--s5)}
   function esc(t){ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
   function svgFor(v){
-    function line(y,size,fill,weight,family,text){
-      return '<text x="600" y="' + y + '" text-anchor="middle" font-family="' + family + '" font-size="' + size + '" font-weight="' + weight + '" fill="' + fill + '">' + esc(text) + '</text>';
-    }
-    return [
-      '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Sobremesa card. ' + esc(v.dish) + ' in ' + esc(v.place) + ', ' + esc(v.duration) + ' at the table.">',
-      '<rect width="1200" height="675" fill="#AF4926"/>',
-      '<rect x="40" y="40" width="1120" height="595" fill="#F6E3BB"/>',
-      '<rect x="64" y="64" width="1072" height="547" fill="none" stroke="#22402C" stroke-width="3" stroke-dasharray="10 10"/>',
-      line(170,46,"#22402C","700","Oswald, Helvetica, sans-serif","SOBREMESA"),
-      line(215,22,"#9E3E1E","400","Georgia, serif","the time you stay at the table after the food is gone"),
-      line(330,34,"#22402C","600","Oswald, Helvetica, sans-serif",v.place.toUpperCase()),
-      line(400,54,"#22402C","500","Georgia, serif",v.dish),
-      line(530,120,"#AF4926","700","Georgia, serif",v.duration),
-      line(590,18,"#22402C","600","Oswald, Helvetica, sans-serif","AI ASSISTED. HUMAN APPROVED. POWERED BY NLP."),
+    var W = 1200, H = 675;
+    var ink = "#2C251A", cream = "#F6E3BB", green = "#22402C", rust = "#AF4926", rustDeep = "#9E3E1E";
+    var corner = 40;
+    // Clipped-corner octagon path for outer frame
+    var outerPath = "M" + corner + " 0 L" + (W - corner) + " 0 L" + W + " " + corner + " L" + W + " " + (H - corner) + " L" + (W - corner) + " " + H + " L" + corner + " " + H + " L0 " + (H - corner) + " L0 " + corner + " Z";
+    var inset = 16;
+    var iL = inset, iT = inset, iW = W - inset * 2, iH = H - inset * 2;
+    var c2 = corner - inset;
+    var innerPath = "M" + (iL + c2) + " " + iT + " L" + (iL + iW - c2) + " " + iT + " L" + (iL + iW) + " " + (iT + c2) + " L" + (iL + iW) + " " + (iT + iH - c2) + " L" + (iL + iW - c2) + " " + (iT + iH) + " L" + (iL + c2) + " " + (iT + iH) + " L" + iL + " " + (iT + iH - c2) + " L" + iL + " " + (iT + c2) + " Z";
+    // Layout: left-aligned with a vertical rail
+    var railX = 80;
+    var textX = 110;
+    var svg = [
+      '<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Sobremesa card. ' + esc(v.dish) + ' in ' + esc(v.place) + ', ' + esc(v.duration) + ' at the table.">',
+      // Outer clipped frame
+      '<path d="' + outerPath + '" fill="' + ink + '"/>',
+      // Inner cream fill
+      '<path d="' + innerPath + '" fill="' + cream + '"/>',
+      // Vertical rail accent line
+      '<line x1="' + railX + '" y1="60" x2="' + railX + '" y2="' + (H - 60) + '" stroke="' + rust + '" stroke-width="3" stroke-dasharray="6 6"/>',
+      // Horizontal dotted divider
+      '<line x1="' + textX + '" y1="320" x2="' + (W - 80) + '" y2="320" stroke="' + rust + '" stroke-width="2" stroke-dasharray="5 5"/>',
+      // SOBREMESA title - Alfa Slab One style
+      '<text x="' + textX + '" y="110" font-family="\'Alfa Slab One\', Georgia, serif" font-size="52" font-weight="400" fill="' + green + '" text-transform="uppercase">SOBREMESA</text>',
+      // Tagline - Crimson Pro italic
+      '<text x="' + textX + '" y="145" font-family="\'Crimson Pro\', Georgia, serif" font-size="20" font-style="italic" font-weight="500" fill="' + rustDeep + '">the time you stay at the table after the food is gone</text>',
+      // Place - Oswald
+      '<text x="' + textX + '" y="220" font-family="Oswald, Helvetica, sans-serif" font-size="28" font-weight="600" letter-spacing="2" fill="' + green + '">' + esc(v.place.toUpperCase()) + '</text>',
+      // Dish - Crimson Pro
+      '<text x="' + textX + '" y="280" font-family="\'Crimson Pro\', Georgia, serif" font-size="44" font-weight="500" fill="' + green + '">' + esc(v.dish) + '</text>',
+      // Duration - large, Alfa Slab One style
+      '<text x="' + textX + '" y="440" font-family="\'Alfa Slab One\', Georgia, serif" font-size="100" font-weight="400" fill="' + rust + '">' + esc(v.duration) + '</text>',
+      // Duration label - Oswald
+      '<text x="' + textX + '" y="480" font-family="Oswald, Helvetica, sans-serif" font-size="16" font-weight="600" letter-spacing="2" fill="' + green + '">TIME AT THE TABLE</text>',
+      // Footer attribution
+      '<text x="' + textX + '" y="' + (H - 50) + '" font-family="Oswald, Helvetica, sans-serif" font-size="14" font-weight="500" letter-spacing="2" fill="' + green + '">AI ASSISTED. HUMAN APPROVED. POWERED BY NLP.</text>',
       '</svg>'
-    ].join("");
+    ];
+    return svg.join("");
   }
 
   form.addEventListener("submit", function(ev){
